@@ -16,7 +16,10 @@ use std::ops::Deref;
 use std::ptr;
 use std::slice;
 
+#[cfg(not(target_arch = "wasm32"))]
 use libsqlite3_sys::sqlite3_free;
+#[cfg(target_arch = "wasm32")]
+use sqlite_wasm_rs::sqlite3_free;
 
 use crate::context::set_result;
 use crate::error::{error_from_sqlite_code, to_sqlite_error};

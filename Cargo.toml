@@ -127,6 +127,34 @@ modern-full = [
 
 bundled-full = ["modern-full", "bundled"]
 
+wasm-full = [
+    "array",
+    "backup",
+    "blob",
+    "chrono",
+    "collation",
+    "column_metadata",
+    "column_decltype",
+    "csvtab",
+    "extra_check",
+    "functions",
+    "hooks",
+    "i128_blob",
+    "jiff",
+    "limits",
+    # "load_extension",
+    "serde_json",
+    "serialize",
+    "series",
+    "time",
+    # "trace",
+    "unlock_notify",
+    "url",
+    "uuid",
+    "vtab",
+    "window",
+]
+
 [dependencies]
 # Jiff Date/Time/Timestamp persistence
 jiff = { version = "0.2", optional = true, default-features = false, features = [
@@ -170,9 +198,19 @@ self_cell = "1.1.0"
 # and we don't have many benchmarks
 bencher = "0.1"
 
-[dependencies.libsqlite3-sys]
+# Native target dependencies
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies.libsqlite3-sys]
 path = "libsqlite3-sys"
 version = "0.35.0"
+optional = false
+
+# WASM target dependencies
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+sqlite-wasm-rs = { version = "0.4.5", default-features = false, features = [
+    "bundled",
+    "sqlite3mc",
+] }
+
 
 [[test]]
 name = "auto_ext"

@@ -1,6 +1,10 @@
 //! Code related to `sqlite3_context` common to `functions` and `vtab` modules.
 
+#[cfg(not(target_arch = "wasm32"))]
 use libsqlite3_sys::sqlite3_value;
+#[cfg(target_arch = "wasm32")]
+use sqlite_wasm_rs::sqlite3_value;
+
 use std::ffi::{c_int, c_void};
 #[cfg(feature = "array")]
 use std::rc::Rc;
